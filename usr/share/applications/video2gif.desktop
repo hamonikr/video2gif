@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Version=1.3
+Name=Video2gif
+Name[ko]=GIF 변환 도구
+Comment=Convert video file to gif image
+Comment[ko]=동영상 파일을 GIF 이미지로 변환
+Icon=video2gif
+Exec=video2gif
+Terminal=false
+Categories=Utility;
+Keywords=video2gif;gif;video;convert;변환;동영상;mp4;mkv;avi;
+X-Ubuntu-Gettext-Domain=video2gif
+

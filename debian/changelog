@@ -1,0 +1,7 @@
+video2gif (1.0.0) stable; urgency=medium
+
+  * Release for HamoniKR 7.0
+  * Apply i18n for ko_KR  
+
+ -- HamoniKR <pkg@hamonikr.org>  Fri, 10 Nov 2023 10:04:32 +0900
+

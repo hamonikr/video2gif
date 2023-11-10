@@ -1,0 +1,12 @@
+Source: video2gif
+Section: utils
+Priority: optional
+Maintainer: HamoniKR <pkg@hamonikr.org>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.5
+
+Package: video2gif
+Architecture: all
+Depends: ffmpeg
+Description: Convert Video to GIF tool
+ 비디오 파일을 움직이는 GIF로 변환하는 프로그램.

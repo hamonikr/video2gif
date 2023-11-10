@@ -1,3 +1,10 @@
+video2gif (1.0.2) stable; urgency=medium
+
+  * Removed filename check logic
+   - Cause fixed nemo action on hamonikr-system
+
+ -- HamoniKR <pkg@hamonikr.org>  Fri, 10 Nov 2023 20:58:02 +0900
+
 video2gif (1.0.1) stable; urgency=medium
 
   * Add message for filename include space or #

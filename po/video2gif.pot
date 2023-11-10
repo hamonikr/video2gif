@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-10 13:35+0900\n"
+"POT-Creation-Date: 2023-11-10 20:55+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,36 +17,31 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: usr/local/bin/video2gif.py:96 usr/local/bin/video2gif.py:129
+#: usr/local/bin/video2gif.py:94 usr/local/bin/video2gif.py:114
 msgid "Unsupported file extensions"
 msgstr ""
 
-#: usr/local/bin/video2gif.py:113
+#: usr/local/bin/video2gif.py:106
 msgid "No file selected. Please select a file."
 msgstr ""
 
-#: usr/local/bin/video2gif.py:123
-msgid ""
-"Invalid file name. The file name must not contain spaces or '#' characters."
-msgstr ""
-
-#: usr/local/bin/video2gif.py:203
+#: usr/local/bin/video2gif.py:188
 msgid "Failed to retrieve total frame count: "
 msgstr ""
 
-#: usr/local/bin/video2gif.py:222
+#: usr/local/bin/video2gif.py:207
 msgid "Conversion completed successfully."
 msgstr ""
 
-#: usr/local/bin/video2gif.py:224
+#: usr/local/bin/video2gif.py:209
 msgid "An error occurred during conversion."
 msgstr ""
 
-#: usr/local/bin/video2gif.py:250
+#: usr/local/bin/video2gif.py:235
 msgid "Error"
 msgstr ""
 
-#: usr/local/bin/video2gif.py:263
+#: usr/local/bin/video2gif.py:248
 msgid "Info"
 msgstr ""
 

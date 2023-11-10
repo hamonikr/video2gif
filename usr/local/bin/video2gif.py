@@ -35,8 +35,6 @@ class Video2GIFConverter:
             "on_file_set": self.on_file_set, 
             "on_convert_button_clicked": self.on_convert_button_clicked,
         })
-        # 파일명이 인자로 제공되었는지 여부를 추적하는 플래그
-        self.is_file_argument_provided = video_file is not None
 
         # 팔레트 사용하지 않음을 기본으로 설정
         palette_checkbox = self.builder.get_object("use_pallete")
@@ -48,7 +46,7 @@ class Video2GIFConverter:
 
         self.window = self.builder.get_object("convert_dialog")
         
-        # 제목에 버전 정보를 추가합니다.
+        # 창 제목에 버전 정보를 추가
         original_title = self.window.get_title()
         version = "1.0"
         new_title = f"{original_title} - v{version}"
@@ -103,11 +101,6 @@ class Video2GIFConverter:
         _, file_extension = os.path.splitext(filename)
         return file_extension.lower() in supported_extensions
     
-    # 파일명에 유효하지 않은 문자가 있는지 검사하는 메소드
-    def is_valid_filename(self, filename):
-        # 파일명에 공백이나 # 문자가 있는지 검사
-        return " " not in filename and "#" not in filename
-    
     def on_convert_button_clicked(self, widget):
         if not self.video_file:
             self.display_error(_("No file selected. Please select a file."))
@@ -117,14 +110,6 @@ class Video2GIFConverter:
         ok_button = self.builder.get_object("ok_btn")
         ok_button.set_sensitive(False)
         
-        # 인자로 제공된 파일명이 있고, 유효하지 않은 경우 검증
-        if self.is_file_argument_provided and (not self.video_file or not self.is_valid_filename(self.video_file)):
-            # 사용자에게 에러 메시지를 표시하고 'ok_btn' 버튼을 다시 활성화
-            self.display_error(_("Invalid file name. The file name must not contain spaces or '#' characters."))
-            ok_button.set_sensitive(True)
-            self.is_file_argument_provided = None
-            return
-                
         if not self.is_supported_file_type(self.video_file):
             self.display_error(_("Unsupported file extensions"))
             self.file_chooser_button.unselect_all()  # 파일 선택을 취소합니다.

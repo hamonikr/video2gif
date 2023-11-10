@@ -1,3 +1,10 @@
+video2gif (1.0.1) stable; urgency=medium
+
+  * Add message for filename include space or #
+   - Cause nemo action bugs
+
+ -- HamoniKR <pkg@hamonikr.org>  Fri, 10 Nov 2023 12:31:46 +0900
+
 video2gif (1.0.0) stable; urgency=medium
 
   * Release for HamoniKR 7.0

@@ -12,6 +12,7 @@ import locale
 import threading
 import re
 import argparse
+import tempfile
 
 # i18n
 APP = 'video2gif'
@@ -34,9 +35,17 @@ class Video2GIFConverter:
             "on_file_set": self.on_file_set, 
             "on_convert_button_clicked": self.on_convert_button_clicked,
         })
-        # Get the palette checkbox and set it active
+        # 파일명이 인자로 제공되었는지 여부를 추적하는 플래그
+        self.is_file_argument_provided = video_file is not None
+
+        # 팔레트 사용하지 않음을 기본으로 설정
         palette_checkbox = self.builder.get_object("use_pallete")
-        palette_checkbox.set_active(True)        
+        palette_checkbox.set_active(False)
+        
+        # 변환할 이미지 크기를 800으로 기본으로 설정
+        size_combobox = self.builder.get_object("comboboxtext_size")
+        size_combobox.set_active_id("800")
+
         self.window = self.builder.get_object("convert_dialog")
         
         # 제목에 버전 정보를 추가합니다.
@@ -93,12 +102,34 @@ class Video2GIFConverter:
         supported_extensions = ['.mp4', '.webm', '.avi', '.mkv']
         _, file_extension = os.path.splitext(filename)
         return file_extension.lower() in supported_extensions
-
+    
+    # 파일명에 유효하지 않은 문자가 있는지 검사하는 메소드
+    def is_valid_filename(self, filename):
+        # 파일명에 공백이나 # 문자가 있는지 검사
+        return " " not in filename and "#" not in filename
+    
     def on_convert_button_clicked(self, widget):
         if not self.video_file:
             self.display_error(_("No file selected. Please select a file."))
             return
+
+        # 'ok_btn' 버튼을 찾아서 비활성화
+        ok_button = self.builder.get_object("ok_btn")
+        ok_button.set_sensitive(False)
         
+        # 인자로 제공된 파일명이 있고, 유효하지 않은 경우 검증
+        if self.is_file_argument_provided and (not self.video_file or not self.is_valid_filename(self.video_file)):
+            # 사용자에게 에러 메시지를 표시하고 'ok_btn' 버튼을 다시 활성화
+            self.display_error(_("Invalid file name. The file name must not contain spaces or '#' characters."))
+            ok_button.set_sensitive(True)
+            self.is_file_argument_provided = None
+            return
+                
+        if not self.is_supported_file_type(self.video_file):
+            self.display_error(_("Unsupported file extensions"))
+            self.file_chooser_button.unselect_all()  # 파일 선택을 취소합니다.
+            return  # 지원되지 않는 파일 형식이므로 여기서 리턴합니다.        
+
         # Get the selected size ID from the comboboxtext_size widget
         size_combobox = self.builder.get_object("comboboxtext_size")
         selected_id = size_combobox.get_active_id()
@@ -114,7 +145,8 @@ class Video2GIFConverter:
         output_file = os.path.splitext(self.video_file)[0] + ".gif"
         
         if use_palette:
-            palette_file = os.path.splitext(self.video_file)[0] + "_palette.png"
+            palette_file = os.path.join(tempfile.gettempdir(), os.path.splitext(os.path.basename(self.video_file))[0] + "_palette.png")
+            
             ffmpeg_command = [
                 "ffmpeg",
                 "-i", self.video_file,
@@ -148,19 +180,30 @@ class Video2GIFConverter:
         GLib.idle_add(self.progress_bar.set_visible, True)
         GLib.idle_add(self.progress_bar.set_fraction, 0.0)
 
-        # 전체 프레임 수를 가져오기 위한 명령어 실행
-        ffprobe_command = [
-            "ffprobe",
-            "-v", "error",
-            "-select_streams", "v:0",
-            "-count_frames",
-            "-show_entries",
-            "stream=nb_read_frames",
-            "-of", "default=nokey=1:noprint_wrappers=1",
-            self.video_file
-        ]
-        total_frames = subprocess.check_output(ffprobe_command, universal_newlines=True).strip()
-        total_frames = int(total_frames) if total_frames.isdigit() else 0
+        try:
+            # 전체 프레임 수를 가져오기 위한 명령어 실행
+            ffprobe_command = [
+                "ffprobe",
+                "-v", "error",
+                "-select_streams", "v:0",
+                "-count_frames",
+                "-show_entries",
+                "stream=nb_read_frames",
+                "-of", "default=nokey=1:noprint_wrappers=1",
+                self.video_file
+            ]
+            total_frames = subprocess.check_output(ffprobe_command, universal_newlines=True).strip()
+            total_frames = int(total_frames) if total_frames.isdigit() else 0
+
+            if total_frames <= 0:
+                raise ValueError("Unable to determine the total number of frames.")
+
+        except (subprocess.CalledProcessError, ValueError) as e:
+            # 에러 발생 시 오류 메시지를 표시하고 프로그레스 바를 숨김
+            GLib.idle_add(self.display_error, _("Failed to retrieve total frame count: ") + str(e))
+            GLib.idle_add(self.progress_bar.set_visible, False)
+            GLib.idle_add(self.on_thread_done)
+            return
 
         # ffmpeg 명령 실행
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
@@ -182,23 +225,20 @@ class Video2GIFConverter:
 
         # 프로그레스 바를 숨깁니다.
         GLib.idle_add(self.progress_bar.set_visible, False)
+
         # 팔레트 파일이 있으면 제거합니다.
         if use_palette and os.path.isfile(palette_file):
             os.remove(palette_file)
 
-        # Run the ffmpeg command
-        # try:
-        #     subprocess.run(ffmpeg_command, check=True)
-        #     self.display_info(_("Conversion completed successfully."))
-        #     # If a palette was used, remove the temporary palette file
-        #     if use_palette and os.path.isfile(palette_file):
-        #         os.remove(palette_file)
-        # except subprocess.CalledProcessError as e:
-        #     self.display_error(_("An error occurred: ") + str(e))
-        #     # If a palette was used and an error occurred, remove the temporary palette file
-        #     if use_palette and os.path.isfile(palette_file):
-        #         os.remove(palette_file)
+        # 스레드가 완료된 후에 버튼을 다시 활성화
+        GLib.idle_add(self.on_thread_done)            
 
+    # 스레드가 완료되었을 때 실행할 함수
+    def on_thread_done(self):
+        # 'ok_btn' 버튼을 찾아서 활성화
+        ok_button = self.builder.get_object("ok_btn")
+        if ok_button:  # 버튼 객체가 실제로 존재하는지 확인
+            ok_button.set_sensitive(True)
 
     def display_error(self, message):
         translated_message = _(message)

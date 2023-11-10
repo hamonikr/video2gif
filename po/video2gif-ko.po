@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-10 10:27+0900\n"
+"POT-Creation-Date: 2023-11-10 13:35+0900\n"
 "PO-Revision-Date: 2023-11-09 21:36+0900\n"
 "Last-Translator: Kevin Kim <chaeya@gmail.com>\n"
 "Language-Team: Korean <translation-team-ko@googlegroups.com>\n"
@@ -18,27 +18,37 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: usr/local/bin/video2gif.py:87
+#: usr/local/bin/video2gif.py:96 usr/local/bin/video2gif.py:129
 msgid "Unsupported file extensions"
 msgstr "지원되지 않는 파일 형식입니다"
 
-#: usr/local/bin/video2gif.py:99
+#: usr/local/bin/video2gif.py:113
 msgid "No file selected. Please select a file."
 msgstr "선택한 파일이 없습니다. 먼저 파일을 선택하세요."
 
-#: usr/local/bin/video2gif.py:179
+#: usr/local/bin/video2gif.py:123
+msgid ""
+"Invalid file name. The file name must not contain spaces or '#' characters."
+msgstr "전달받은 파일명에 처리할 수 없는 공백이나 특수문자가 포함되어 있습니다. "
+"파일 선택 버튼으로 다시 파일을 선택하세요."
+
+#: usr/local/bin/video2gif.py:203
+msgid "Failed to retrieve total frame count: "
+msgstr "전체 프레임 수를 알 수 없습니다. 파일을 다시 선택하세요"
+
+#: usr/local/bin/video2gif.py:222
 msgid "Conversion completed successfully."
 msgstr "변환이 완료되었습니다."
 
-#: usr/local/bin/video2gif.py:181
+#: usr/local/bin/video2gif.py:224
 msgid "An error occurred during conversion."
-msgstr ""
+msgstr "변환 중 오류가 발생했습니다."
 
-#: usr/local/bin/video2gif.py:210
+#: usr/local/bin/video2gif.py:250
 msgid "Error"
 msgstr "오류"
 
-#: usr/local/bin/video2gif.py:223
+#: usr/local/bin/video2gif.py:263
 msgid "Info"
 msgstr "정보"
 
@@ -83,6 +93,5 @@ msgid "It takes more time, but the resulting image quality is better."
 msgstr "시간이 더 걸리지만, 결과물의 품질이 좋아집니다."
 
 #: usr/local/bin/video2gif.ui.h:11
-#, fuzzy
 msgid "Converting..."
 msgstr "변환하기"

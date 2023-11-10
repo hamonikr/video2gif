@@ -14,4 +14,4 @@ xgettext --language=Python --keyword=_ --keyword=N_ --output=po/video2gif.pot us
 msgmerge -U po/video2gif-ko.po po/video2gif.pot
 
 # 임시 파일 정리
-rm -f src/*.ui.h
+rm -f usr/local/bin/*.ui.h

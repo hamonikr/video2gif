@@ -97,7 +97,7 @@ class Video2GIFConverter:
     
     # 지원되는 파일 형식인지 확인하는 메서드
     def is_supported_file_type(self, filename):
-        supported_extensions = ['.mp4', '.webm', '.avi', '.mkv']
+        supported_extensions = ['.mp4', '.webm', '.avi', '.mkv', '.mov']
         _, file_extension = os.path.splitext(filename)
         return file_extension.lower() in supported_extensions
     

@@ -1,3 +1,9 @@
+video2gif (1.0.3) stable; urgency=medium
+
+  * Support mov file
+
+ -- HamoniKR <pkg@hamonikr.org>  Sat, 11 Nov 2023 10:54:25 +0900
+
 video2gif (1.0.2) stable; urgency=medium
 
   * Removed filename check logic

@@ -88,5 +88,5 @@ msgstr "시간이 더 걸리지만, 결과물의 품질이 좋아집니다."
 
 #: usr/local/bin/video2gif.ui.h:11
 msgid "Converting..."
-msgstr "변환하기"
+msgstr "변환 중..."
 

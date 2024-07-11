@@ -1,3 +1,9 @@
+video2gif (1.0.4+h1) stable; urgency=medium
+
+  * Release for bookworm arm64
+
+ -- HamoniKR <pkg@hamonikr.org>  Fri, 12 Jul 2024 03:29:24 +0900
+
 video2gif (1.0.4) stable; urgency=medium
 
   * Update translation
